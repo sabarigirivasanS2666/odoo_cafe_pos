@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kitchen Display – Odoo Café POS</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+  <div class="app-layout">
+    <aside class="sidebar">
+      <a href="/" class="logo">☕ Odoo<span>Café</span></a>
+      <div class="side-section-title">Navigate</div>
+      <a href="/dashboard" class="side-link"><span class="ic">📊</span> Dashboard</a>
+      <a href="/pos" class="side-link"><span class="ic">🧾</span> POS Terminal</a>
+      <a href="/kitchen" class="side-link active"><span class="ic">👨‍🍳</span> Kitchen Display</a>
+      <a href="/reports" class="side-link"><span class="ic">📈</span> Reports</a>
+      <div class="side-section-title">Account</div>
+      <a href="#" class="side-link" id="logoutBtn"><span class="ic">🚪</span> Logout</a>
+    </aside>
+
+    <main class="main-content">
+      <div class="topbar">
+        <h1>👨‍🍳 Kitchen Display System</h1>
+        <div style="display:flex; gap:14px; align-items:center;">
+          <div class="search-box glass-card" style="padding:4px; min-width:220px;">
+            <span class="ic">🔍</span>
+            <input type="text" class="form-control" id="kdsSearch" placeholder="Search order #..." style="background:transparent; border:none;">
+          </div>
+          <div class="user-chip glass-card">
+            <div class="avatar" id="userAvatar">?</div>
+            <span id="userName">Loading...</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="kds-columns">
+        <div class="kds-column glass-card">
+          <div class="kds-column-head">
+            <h3>🔴 To Cook</h3>
+            <span class="kds-count" id="countToCook">0</span>
+          </div>
+          <div id="colToCook"></div>
+        </div>
+        <div class="kds-column glass-card">
+          <div class="kds-column-head">
+            <h3>🟠 Preparing</h3>
+            <span class="kds-count" id="countPreparing">0</span>
+          </div>
+          <div id="colPreparing"></div>
+        </div>
+        <div class="kds-column glass-card">
+          <div class="kds-column-head">
+            <h3>🟢 Completed</h3>
+            <span class="kds-count" id="countCompleted">0</span>
+          </div>
+          <div id="colCompleted"></div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="{{ url_for('static', filename='js/utils.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/kitchen.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reports – Odoo Café POS</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+</head>
+<body>
+
+  <div class="app-layout">
+    <aside class="sidebar">
+      <a href="/" class="logo">☕ Odoo<span>Café</span></a>
+      <div class="side-section-title">Navigate</div>
+      <a href="/dashboard" class="side-link"><span class="ic">📊</span> Dashboard</a>
+      <a href="/pos" class="side-link"><span class="ic">🧾</span> POS Terminal</a>
+      <a href="/kitchen" class="side-link"><span class="ic">👨‍🍳</span> Kitchen Display</a>
+      <a href="/reports" class="side-link active"><span class="ic">📈</span> Reports</a>
+      <div class="side-section-title">Account</div>
+      <a href="#" class="side-link" id="logoutBtn"><span class="ic">🚪</span> Logout</a>
+    </aside>
+
+    <main class="main-content">
+      <div class="topbar">
+        <h1>📈 Reporting Dashboard</h1>
+        <div class="user-chip glass-card">
+          <div class="avatar" id="userAvatar">?</div>
+          <span id="userName">Loading...</span>
+        </div>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card glass-card">
+          <div><div class="stat-label">Total Orders</div><div class="stat-num" id="rOrders">0</div></div>
+          <div class="stat-icon">🧾</div>
+        </div>
+        <div class="stat-card glass-card">
+          <div><div class="stat-label">Total Revenue</div><div class="stat-num" id="rRevenue">₹0</div></div>
+          <div class="stat-icon">💰</div>
+        </div>
+        <div class="stat-card glass-card">
+          <div><div class="stat-label">Average Order Value</div><div class="stat-num" id="rAOV">₹0</div></div>
+          <div class="stat-icon">📦</div>
+        </div>
+      </div>
+
+      <div class="charts-grid">
+        <div class="chart-card glass-card">
+          <h3>Monthly Sales Trend</h3>
+          <canvas id="monthlySalesChart"></canvas>
+        </div>
+        <div class="chart-card glass-card">
+          <h3>Top 5 Products</h3>
+          <canvas id="topProductsChart"></canvas>
+        </div>
+        <div class="chart-card glass-card">
+          <h3>Top Categories by Revenue</h3>
+          <canvas id="topCategoriesChart"></canvas>
+        </div>
+        <div class="chart-card glass-card">
+          <h3>Orders Overview</h3>
+          <canvas id="overviewChart"></canvas>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="{{ url_for('static', filename='js/utils.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/reports.js') }}"></script>
+</body>
+</html>

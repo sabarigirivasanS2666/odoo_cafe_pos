@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Odoo Café POS – Smart Restaurant Management System</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="navbar-inner">
+      <a href="/" class="logo">☕ Odoo<span>Café</span></a>
+      <ul class="nav-links">
+        <li><a href="#home" class="active">Home</a></li>
+        <li><a href="#features">Features</a></li>
+
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+      <div class="nav-actions">
+
+        <a href="/login" class="btn btn-primary btn-sm">Login</a>
+        <button class="nav-toggle">☰</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero" id="home">
+
+    <h1>Odoo Café POS – <span class="accent-text">Smart Restaurant Management System</span></h1>
+    <p>A complete digital solution for restaurant order management, kitchen operations, customer self-ordering, and
+      analytics.</p>
+    <div class="hero-actions">
+
+      <a href="/login" class="btn btn-outline"> Login</a>
+    </div>
+
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <div class="num">15+</div>
+        <div class="label">Modules</div>
+      </div>
+      <div class="hero-stat">
+        <div class="num">100%</div>
+        <div class="label">Real-time KDS</div>
+      </div>
+      <div class="hero-stat">
+        <div class="num">3</div>
+        <div class="label">Payment Methods</div>
+      </div>
+      <div class="hero-stat">
+        <div class="num">24/7</div>
+        <div class="label">QR Self Order</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section class="section" id="features">
+    <div class="container">
+      <div class="section-head">
+        <div class="section-tag">Capabilities</div>
+        <h2>Everything your café needs, in one system</h2>
+        <p>From order to payment to reporting — built for speed and clarity at the counter and in the kitchen.</p>
+      </div>
+      <div class="features-grid">
+        <div class="feature-card glass-card">
+          <div class="feature-icon">🧾</div>
+          <h3>POS Terminal</h3>
+          <p>Fast product grid, cart, discounts, tax calculation and one-tap checkout.</p>
+        </div>
+        <div class="feature-card glass-card">
+          <div class="feature-icon">👨‍🍳</div>
+          <h3>Kitchen Display</h3>
+          <p>Live order queue with To Cook → Preparing → Completed status tracking.</p>
+        </div>
+        <div class="feature-card glass-card">
+          <div class="feature-icon">📱</div>
+          <h3>Self Ordering</h3>
+          <p>Customers scan a table QR code, browse the digital menu, and order directly.</p>
+        </div>
+        <div class="feature-card glass-card">
+          <div class="feature-icon">🪑</div>
+          <h3>Floor & Table Management</h3>
+          <p>Visual floor plan with live table availability across multiple floors.</p>
+        </div>
+        <div class="feature-card glass-card">
+          <div class="feature-icon">💳</div>
+          <h3>Multi Payment Support</h3>
+          <p>Cash, Card and UPI with QR-based payment confirmation.</p>
+        </div>
+        <div class="feature-card glass-card">
+          <div class="feature-icon">📊</div>
+          <h3>Analytics Dashboard</h3>
+          <p>Revenue, top products, top categories and monthly sales trends at a glance.</p>
+        </div>
+        <div class="feature-card glass-card">
+          <div class="feature-icon">🗂️</div>
+          <h3>Product & Category Management</h3>
+          <p>Add, edit, and organize your menu with category color tags.</p>
+        </div>
+        <div class="feature-card glass-card">
+          <div class="feature-icon">🎟️</div>
+          <h3>Coupons & Promotions</h3>
+          <p>Run discount codes and promotional campaigns effortlessly.</p>
+        </div>
+        <div class="feature-card glass-card">
+          <div class="feature-icon">🧑‍🤝‍🧑</div>
+          <h3>Customer Management</h3>
+          <p>Track customer details and order history for better service.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Workflow -->
+  <section class="section" style="padding-top:0;">
+    <div class="container">
+      <div class="section-head">
+        <div class="section-tag">How it works</div>
+        <h2>Order to Receipt in 6 steps</h2>
+      </div>
+      <div class="workflow">
+        <div class="workflow-step glass-card">Select Table</div>
+        <span class="workflow-arrow">→</span>
+        <div class="workflow-step glass-card">Choose Products</div>
+        <span class="workflow-arrow">→</span>
+        <div class="workflow-step glass-card">Add to Cart</div>
+        <span class="workflow-arrow">→</span>
+        <div class="workflow-step glass-card">Send to Kitchen</div>
+        <span class="workflow-arrow">→</span>
+        <div class="workflow-step glass-card">Payment</div>
+        <span class="workflow-arrow">→</span>
+        <div class="workflow-step glass-card">Receipt</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="section">
+    <div class="container">
+      <div class="glass-card" style="text-align:center; padding:60px 30px;">
+        <h2 style="font-size:1.9rem; margin-bottom:14px;">Ready to modernize your café?</h2>
+        <p style="color:var(--text-secondary); margin-bottom:28px;">Jump into the POS terminal or try the self-ordering
+          experience right now.</p>
+        <div class="hero-actions">
+          <a href="/login" class="btn btn-outline"> Login</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer id="contact">
+    <div class="logo" style="justify-content:center; margin-bottom:10px;">☕ Odoo<span>Café</span></div>
+    <p>Smart Restaurant Management System — built for the Odoo Café POS hackathon.</p>
+    <div class="footer-links">
+      <a href="/">Home</a>
+
+      <a href="/login"> Login</a>
+    </div>
+    <p>📧 contact@odoocafe.com &nbsp;|&nbsp; 📞 +91 98765 43210</p>
+    <p style="margin-top:18px; font-size:0.8rem;">© 2026 Odoo Café POS. All rights reserved.</p>
+  </footer>
+
+  <script src="{{ url_for('static', filename='js/utils.js') }}"></script>
+</body>
+
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Self Order – Odoo Café POS</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="navbar-inner">
+      <a href="/" class="logo">☕ Odoo<span>Café</span></a>
+      <div class="nav-actions">
+        <span id="tableLabel" class="btn btn-ghost btn-sm">{{ ('Table #' ~ table_id) if table_id else 'Counter Order' }}</span>
+      </div>
+    </div>
+  </nav>
+
+  <div class="self-order-header">
+    <h1 style="font-size:1.8rem; margin-bottom:8px;">📱 Digital Menu</h1>
+    <p style="color:var(--text-secondary);">Browse our menu and place your order directly</p>
+  </div>
+
+  <div class="container" style="padding-bottom:120px;">
+    <div class="cat-pills" id="catPills" style="margin-bottom:24px;">
+      <button class="cat-pill active" data-cat="">All</button>
+    </div>
+
+    <div id="menuContainer"></div>
+  </div>
+
+  <!-- Floating cart button -->
+  <div class="floating-cart-btn glass-card" id="floatingCartBtn" style="display:none;" onclick="openCartModal()">
+    <span id="floatingCartCount">0 items</span>
+    <span id="floatingCartTotal" style="color:var(--accent-light); font-weight:800;">₹0.00</span>
+  </div>
+
+  <!-- Cart Modal -->
+  <div class="modal-overlay" id="cartModal">
+    <div class="modal-box glass-card">
+      <div class="modal-head"><h3>Your Order</h3><button class="modal-close" data-close="cartModal">✕</button></div>
+      <div class="cart-items" id="selfCartItems" style="max-height:300px;"></div>
+      <div style="margin-top:14px;">
+        <div class="cart-summary-row"><span>Subtotal</span><span id="selfSubtotal">₹0.00</span></div>
+        <div class="cart-summary-row"><span>Tax</span><span id="selfTax">₹0.00</span></div>
+        <div class="cart-summary-row total"><span>Grand Total</span><span id="selfGrandTotal">₹0.00</span></div>
+      </div>
+      <button class="btn btn-primary btn-block" id="placeOrderBtn" style="margin-top:16px;">Place Order</button>
+    </div>
+  </div>
+
+  <!-- Confirmation Modal -->
+  <div class="modal-overlay" id="confirmModal">
+    <div class="modal-box glass-card" style="text-align:center;">
+      <div style="font-size:3rem; margin-bottom:14px;">✅</div>
+      <h3 style="margin-bottom:10px;">Order Placed!</h3>
+      <p style="color:var(--text-secondary); margin-bottom:6px;">Your order number is</p>
+      <p style="font-size:1.3rem; font-weight:800; color:var(--accent-light); margin-bottom:18px;" id="confirmOrderNum"></p>
+      <p style="color:var(--text-muted); font-size:0.85rem; margin-bottom:20px;">The kitchen has received your order and will start preparing it shortly.</p>
+      <button class="btn btn-primary btn-block" id="closeConfirmBtn">Order More</button>
+    </div>
+  </div>
+
+  <script src="{{ url_for('static', filename='js/utils.js') }}"></script>
+  <script>
+    const TABLE_ID = {{ table_id|tojson }};
+  </script>
+  <script src="{{ url_for('static', filename='js/self_order.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>POS Terminal – Odoo Café POS</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+  <div class="app-layout">
+    <aside class="sidebar">
+      <a href="/" class="logo">☕ Odoo<span>Café</span></a>
+      <div class="side-section-title">Navigate</div>
+      <a href="/dashboard" class="side-link"><span class="ic">📊</span> Dashboard</a>
+      <a href="/pos" class="side-link active"><span class="ic">🧾</span> POS Terminal</a>
+      <a href="/kitchen" class="side-link"><span class="ic">👨‍🍳</span> Kitchen Display</a>
+      <a href="/reports" class="side-link"><span class="ic">📈</span> Reports</a>
+      <div class="side-section-title">Account</div>
+      <a href="#" class="side-link" id="logoutBtn"><span class="ic">🚪</span> Logout</a>
+    </aside>
+
+    <main class="main-content">
+      <div class="topbar">
+        <h1>POS Terminal</h1>
+        <div class="user-chip glass-card">
+          <div class="avatar" id="userAvatar">?</div>
+          <span id="userName">Loading...</span>
+        </div>
+      </div>
+
+      <div class="pos-layout">
+        <!-- Products -->
+        <div class="pos-products">
+          <div class="search-box glass-card" style="padding:4px; margin-bottom:14px;">
+            <span class="ic">🔍</span>
+            <input type="text" class="form-control" id="posSearch" placeholder="Search products..." style="background:transparent; border:none;">
+          </div>
+          <div class="cat-pills" id="catPills">
+            <button class="cat-pill active" data-cat="">All</button>
+          </div>
+          <div class="product-grid" id="posProductGrid"></div>
+        </div>
+
+        <!-- Cart -->
+        <div class="pos-cart glass-card">
+          <div>
+            <label style="font-size:0.8rem; color:var(--text-secondary); font-weight:600;">SELECT TABLE <span style="color:var(--danger);">*</span></label>
+            <div class="table-select-grid" id="tableSelectGrid"></div>
+          </div>
+
+          <h3 style="font-size:1rem; margin-top:4px;">🛒 Cart <span id="cartCount" style="color:var(--text-muted); font-weight:400;">(0 items)</span></h3>
+          <div class="cart-items" id="cartItems">
+            <div class="empty-state"><div class="ic">🛒</div>Cart is empty</div>
+          </div>
+
+          <div>
+            <input type="text" class="form-control" id="couponInput" placeholder="Coupon code (optional)" style="margin-bottom:10px;">
+            <div class="cart-summary-row"><span>Subtotal</span><span id="cartSubtotal">₹0.00</span></div>
+            <div class="cart-summary-row"><span>Tax</span><span id="cartTax">₹0.00</span></div>
+            <div class="cart-summary-row"><span>Discount</span><span id="cartDiscount">- ₹0.00</span></div>
+            <div class="cart-summary-row total"><span>Grand Total</span><span id="cartGrandTotal">₹0.00</span></div>
+            <div style="display:flex; gap:10px; margin-top:14px;">
+              <button class="btn btn-outline btn-block" id="sendToKitchenBtn">Send to Kitchen</button>
+              <button class="btn btn-primary btn-block" id="checkoutBtn">Checkout</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Payment Modal -->
+  <div class="modal-overlay" id="paymentModal">
+    <div class="modal-box glass-card">
+      <div class="modal-head"><h3>Select Payment Method</h3><button class="modal-close" data-close="paymentModal">✕</button></div>
+      <div class="payment-methods">
+        <div class="payment-method-card selected" data-method="cash"><div class="pm-icon">💵</div>Cash</div>
+        <div class="payment-method-card" data-method="card"><div class="pm-icon">💳</div>Card</div>
+        <div class="payment-method-card" data-method="upi"><div class="pm-icon">📱</div>UPI</div>
+      </div>
+      <div id="upiQrContainer" style="display:none; text-align:center; margin:18px 0;">
+        <img id="upiQrImg" src="" alt="UPI QR" style="width:180px; height:180px; border-radius:12px; background:#fff; padding:8px;">
+        <p style="font-size:0.8rem; color:var(--text-muted); margin-top:8px;">Scan to pay via UPI</p>
+      </div>
+      <div style="text-align:center; font-size:1.4rem; font-weight:800; margin:18px 0;" id="paymentAmount">₹0.00</div>
+      <button class="btn btn-primary btn-block" id="confirmPaymentBtn">Confirm Payment</button>
+    </div>
+  </div>
+
+  <!-- Receipt Modal -->
+  <div class="modal-overlay" id="receiptModal">
+    <div class="modal-box glass-card">
+      <div class="modal-head"><h3>Receipt</h3><button class="modal-close" data-close="receiptModal">✕</button></div>
+      <div class="receipt-box glass-card" id="receiptContent"></div>
+      <div style="display:flex; gap:10px; margin-top:18px;">
+        <button class="btn btn-outline btn-block" onclick="window.print()">🖨️ Print Receipt</button>
+        <button class="btn btn-primary btn-block" id="newOrderBtn">New Order</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="{{ url_for('static', filename='js/utils.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/pos.js') }}"></script>
+</body>
+</html>

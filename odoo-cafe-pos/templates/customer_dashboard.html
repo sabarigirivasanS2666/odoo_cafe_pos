@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Dashboard – Odoo Café POS</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+  <div class="app-layout">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <a href="/" class="logo">☕ Odoo<span>Café</span></a>
+
+      <div class="side-section-title">Overview</div>
+      <a href="#overview" class="side-link active" data-section="overview"><span class="ic">🏠</span> My Dashboard</a>
+
+      <div class="side-section-title">Order</div>
+      <a href="#pos" class="side-link" data-section="pos"><span class="ic">🧾</span> POS Terminal</a>
+      <a href="#orders" class="side-link" data-section="orders"><span class="ic">📜</span> My Orders</a>
+
+      <div class="side-section-title">Account</div>
+      <a href="#" class="side-link" id="logoutBtn"><span class="ic">🚪</span> Logout</a>
+    </aside>
+
+    <!-- Main -->
+    <main class="main-content">
+      <div class="topbar">
+        <div>
+          <button class="sidebar-toggle btn btn-ghost btn-sm" style="display:none;">☰</button>
+          <h1 id="pageTitle">My Dashboard</h1>
+        </div>
+        <div class="user-chip glass-card">
+          <div class="avatar" id="userAvatar">?</div>
+          <span id="userName">Loading...</span>
+        </div>
+      </div>
+
+      <!-- OVERVIEW SECTION -->
+      <section id="section-overview" class="dash-section">
+        <div class="stats-grid">
+          <div class="stat-card glass-card">
+            <div>
+              <div class="stat-label">Total Orders</div>
+              <div class="stat-num" id="statTotalOrders">0</div>
+              <div class="stat-change stat-up">All time</div>
+            </div>
+            <div class="stat-icon">🧾</div>
+          </div>
+          <div class="stat-card glass-card">
+            <div>
+              <div class="stat-label">Total Spent</div>
+              <div class="stat-num" id="statTotalSpent">₹0</div>
+              <div class="stat-change stat-up">All time</div>
+            </div>
+            <div class="stat-icon">💰</div>
+          </div>
+          <div class="stat-card glass-card">
+            <div>
+              <div class="stat-label">Pending Orders</div>
+              <div class="stat-num" id="statPendingOrders">0</div>
+            </div>
+            <div class="stat-icon">⏳</div>
+          </div>
+          <div class="stat-card glass-card">
+            <div>
+              <div class="stat-label">Loyalty Points</div>
+              <div class="stat-num" id="statLoyaltyPoints">0</div>
+              <div class="stat-change stat-up" id="statLoyaltyPointsValue">Worth ₹0</div>
+            </div>
+            <div class="stat-icon">⭐</div>
+          </div>
+        </div>
+
+        <div class="panel glass-card" id="pointsInfoPanel">
+          <div class="panel-head"><h3>⭐ My Loyalty Points</h3></div>
+          <p style="color:var(--text-secondary); font-size:0.92rem; margin-bottom:14px;">
+            Earn 1 point for every ₹50 you spend. Your points are automatically applied as a
+            discount (1 point = ₹1 off) the next time you check out here.
+          </p>
+          <div style="overflow-x:auto;">
+            <table class="data-table">
+              <thead><tr><th>Date</th><th>Activity</th><th>Points</th><th>Balance</th></tr></thead>
+              <tbody id="pointsHistoryBody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="panel glass-card">
+          <div class="panel-head"><h3>Quick Actions</h3></div>
+          <div style="display:flex; gap:14px; flex-wrap:wrap;">
+            <a href="#pos" class="btn btn-primary" id="startOrderBtn">🧾 Open POS Terminal</a>
+            <a href="#orders" class="btn btn-outline" id="viewOrdersBtn">📜 View My Orders</a>
+          </div>
+        </div>
+
+        <div class="panel glass-card">
+          <div class="panel-head"><h3>Recent Orders</h3></div>
+          <div style="overflow-x:auto;">
+            <table class="data-table">
+              <thead><tr><th>Order #</th><th>Date</th><th>Items</th><th>Total</th><th>Status</th><th>Payment</th></tr></thead>
+              <tbody id="recentOrdersBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- POS TERMINAL SECTION (self-checkout) -->
+      <section id="section-pos" class="dash-section" style="display:none;">
+        <div class="pos-layout">
+          <!-- Products -->
+          <div class="pos-products">
+            <div class="search-box glass-card" style="padding:4px; margin-bottom:14px;">
+              <span class="ic">🔍</span>
+              <input type="text" class="form-control" id="custPosSearch" placeholder="Search products..." style="background:transparent; border:none;">
+            </div>
+            <div class="cat-pills" id="custCatPills">
+              <button class="cat-pill active" data-cat="">All</button>
+            </div>
+            <div class="product-grid" id="custProductGrid"></div>
+          </div>
+
+          <!-- Cart -->
+          <div class="pos-cart glass-card">
+            <h3 style="font-size:1rem; margin-top:4px;">🛒 Your Order <span id="custCartCount" style="color:var(--text-muted); font-weight:400;">(0 items)</span></h3>
+            <div class="cart-items" id="custCartItems">
+              <div class="empty-state"><div class="ic">🛒</div>Cart is empty</div>
+            </div>
+
+            <div>
+              <input type="text" class="form-control" id="custCouponInput" placeholder="Coupon code (optional)" style="margin-bottom:10px;">
+              <label style="display:flex; align-items:center; gap:8px; font-size:0.85rem; color:var(--text-secondary); margin-bottom:14px; cursor:pointer;">
+                <input type="checkbox" id="usePointsToggle" checked style="width:16px; height:16px; cursor:pointer;">
+                <span id="usePointsLabel">Use my loyalty points for a discount</span>
+              </label>
+              <div class="cart-summary-row"><span>Subtotal</span><span id="custCartSubtotal">₹0.00</span></div>
+              <div class="cart-summary-row"><span>Tax</span><span id="custCartTax">₹0.00</span></div>
+              <div class="cart-summary-row"><span>Coupon Discount</span><span id="custCartDiscount">- ₹0.00</span></div>
+              <div class="cart-summary-row" id="custPointsDiscountRow" style="display:none;"><span>⭐ Points Discount</span><span id="custCartPointsDiscount">- ₹0.00</span></div>
+              <div class="cart-summary-row total"><span>Grand Total</span><span id="custCartGrandTotal">₹0.00</span></div>
+              <button class="btn btn-primary btn-block" id="custCheckoutBtn" style="margin-top:14px;">Place Order & Pay</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- MY ORDERS SECTION -->
+      <section id="section-orders" class="dash-section" style="display:none;">
+        <div class="panel glass-card">
+          <div class="panel-head"><h3>My Orders</h3></div>
+          <div style="overflow-x:auto;">
+            <table class="data-table">
+              <thead><tr><th>Order #</th><th>Date</th><th>Items</th><th>Total</th><th>Status</th><th>Payment</th></tr></thead>
+              <tbody id="myOrdersBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Payment Modal -->
+  <div class="modal-overlay" id="paymentModal">
+    <div class="modal-box glass-card">
+      <div class="modal-head"><h3>Select Payment Method</h3><button class="modal-close" data-close="paymentModal">✕</button></div>
+      <div class="payment-methods">
+        <div class="payment-method-card selected" data-method="cash"><div class="pm-icon">💵</div>Cash</div>
+        <div class="payment-method-card" data-method="card"><div class="pm-icon">💳</div>Card</div>
+        <div class="payment-method-card" data-method="upi"><div class="pm-icon">📱</div>UPI</div>
+      </div>
+      <div id="upiQrContainer" style="display:none; text-align:center; margin:18px 0;">
+        <img id="upiQrImg" src="" alt="UPI QR" style="width:180px; height:180px; border-radius:12px; background:#fff; padding:8px;">
+        <p style="font-size:0.8rem; color:var(--text-muted); margin-top:8px;">Scan to pay via UPI</p>
+      </div>
+      <div style="text-align:center; font-size:1.4rem; font-weight:800; margin:18px 0;" id="paymentAmount">₹0.00</div>
+      <button class="btn btn-primary btn-block" id="confirmPaymentBtn">Confirm Payment</button>
+    </div>
+  </div>
+
+  <!-- Receipt Modal -->
+  <div class="modal-overlay" id="receiptModal">
+    <div class="modal-box glass-card">
+      <div class="modal-head"><h3>Receipt</h3><button class="modal-close" data-close="receiptModal">✕</button></div>
+      <div class="receipt-box glass-card" id="receiptContent"></div>
+      <div style="display:flex; gap:10px; margin-top:18px;">
+        <button class="btn btn-outline btn-block" onclick="window.print()">🖨️ Print Receipt</button>
+        <button class="btn btn-primary btn-block" id="newOrderBtn">New Order</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="{{ url_for('static', filename='js/utils.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/customer_dashboard.js') }}"></script>
+</body>
+</html>

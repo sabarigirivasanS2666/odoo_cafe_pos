@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard – Odoo Café POS</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+  <div class="app-layout">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <a href="/" class="logo">☕ Odoo<span>Café</span></a>
+
+      <div class="side-section-title">Overview</div>
+      <a href="#overview" class="side-link active" data-section="overview"><span class="ic">📊</span> Dashboard</a>
+
+      <div class="side-section-title">Menu</div>
+      <a href="#products" class="side-link" data-section="products"><span class="ic">🍔</span> Products</a>
+      <a href="#categories" class="side-link" data-section="categories"><span class="ic">🏷️</span> Categories</a>
+
+      <div class="side-section-title">Restaurant</div>
+      <a href="#floors" class="side-link" data-section="floors"><span class="ic">🪑</span> Floors & Tables</a>
+      <a href="#customers" class="side-link" data-section="customers"><span class="ic">👥</span> Customers</a>
+      <a href="#coupons" class="side-link" data-section="coupons"><span class="ic">🎟️</span> Coupons</a>
+
+      <div class="side-section-title">Operations</div>
+      <a href="/pos" class="side-link"><span class="ic">🧾</span> POS Terminal</a>
+      <a href="/kitchen" class="side-link"><span class="ic">👨‍🍳</span> Kitchen Display</a>
+      <a href="/reports" class="side-link"><span class="ic">📈</span> Reports</a>
+
+      <div class="side-section-title">Account</div>
+      <a href="#" class="side-link" id="logoutBtn"><span class="ic">🚪</span> Logout</a>
+    </aside>
+
+    <!-- Main -->
+    <main class="main-content">
+      <div class="topbar">
+        <div>
+          <button class="sidebar-toggle btn btn-ghost btn-sm" style="display:none;">☰</button>
+          <h1 id="pageTitle">Dashboard Overview</h1>
+        </div>
+        <div class="user-chip glass-card">
+          <div class="avatar" id="userAvatar">?</div>
+          <span id="userName">Loading...</span>
+        </div>
+      </div>
+
+      <!-- OVERVIEW SECTION -->
+      <section id="section-overview" class="dash-section">
+        <div class="stats-grid">
+          <div class="stat-card glass-card">
+            <div>
+              <div class="stat-label">Total Orders</div>
+              <div class="stat-num" id="statOrders">0</div>
+              <div class="stat-change stat-up">All time</div>
+            </div>
+            <div class="stat-icon">🧾</div>
+          </div>
+          <div class="stat-card glass-card">
+            <div>
+              <div class="stat-label">Total Revenue</div>
+              <div class="stat-num" id="statRevenue">₹0</div>
+              <div class="stat-change stat-up">All time</div>
+            </div>
+            <div class="stat-icon">💰</div>
+          </div>
+          <div class="stat-card glass-card">
+            <div>
+              <div class="stat-label">Avg Order Value</div>
+              <div class="stat-num" id="statAOV">₹0</div>
+            </div>
+            <div class="stat-icon">📦</div>
+          </div>
+          <div class="stat-card glass-card">
+            <div>
+              <div class="stat-label">Products</div>
+              <div class="stat-num" id="statProducts">0</div>
+            </div>
+            <div class="stat-icon">🍔</div>
+          </div>
+        </div>
+
+        <div class="panel glass-card">
+          <div class="panel-head">
+            <h3>Quick Actions</h3>
+          </div>
+          <div style="display:flex; gap:14px; flex-wrap:wrap;">
+            <a href="/pos" class="btn btn-primary">Open POS Terminal</a>
+            <a href="/kitchen" class="btn btn-outline">Kitchen Display</a>
+            <a href="/reports" class="btn btn-outline">View Reports</a>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- PRODUCTS SECTION -->
+      <section id="section-products" class="dash-section" style="display:none;">
+        <div class="panel glass-card">
+          <div class="panel-head">
+            <h3>Products</h3>
+            <button class="btn btn-primary btn-sm" id="addProductBtn">+ Add Product</button>
+          </div>
+          <div class="toolbar">
+            <div class="search-box">
+              <span class="ic">🔍</span>
+              <input type="text" class="form-control" id="productSearch" placeholder="Search products...">
+            </div>
+            <select class="form-control" id="productCategoryFilter" style="max-width:180px;">
+              <option value="">All Categories</option>
+            </select>
+          </div>
+          <div style="overflow-x:auto;">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Product</th>
+                  <th>Category</th>
+                  <th>Price</th>
+                  <th>Tax</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="productsTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- CATEGORIES SECTION -->
+      <section id="section-categories" class="dash-section" style="display:none;">
+        <div class="panel glass-card">
+          <div class="panel-head">
+            <h3>Categories</h3>
+            <button class="btn btn-primary btn-sm" id="addCategoryBtn">+ Add Category</button>
+          </div>
+          <div style="overflow-x:auto;">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Color</th>
+                  <th>Products</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="categoriesTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- FLOORS SECTION -->
+      <section id="section-floors" class="dash-section" style="display:none;">
+        <div class="panel glass-card">
+          <div class="panel-head">
+            <h3>Floors & Tables</h3>
+            <div style="display:flex; gap:10px;">
+              <button class="btn btn-outline btn-sm" id="addFloorBtn">+ Add Floor</button>
+              <button class="btn btn-primary btn-sm" id="addTableBtn">+ Add Table</button>
+            </div>
+          </div>
+          <div id="floorsContainer"></div>
+        </div>
+      </section>
+
+      <!-- CUSTOMERS SECTION -->
+      <section id="section-customers" class="dash-section" style="display:none;">
+        <div class="panel glass-card">
+          <div class="panel-head">
+            <h3>Customers</h3>
+            <button class="btn btn-primary btn-sm" id="addCustomerBtn">+ Add Customer</button>
+          </div>
+          <div class="toolbar">
+            <div class="search-box">
+              <span class="ic">🔍</span>
+              <input type="text" class="form-control" id="customerSearch" placeholder="Search customers...">
+            </div>
+          </div>
+          <div style="overflow-x:auto;">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Phone</th>
+                  <th>Address</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="customersTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- COUPONS SECTION -->
+      <section id="section-coupons" class="dash-section" style="display:none;">
+        <div class="panel glass-card">
+          <div class="panel-head">
+            <h3>Coupons</h3>
+            <button class="btn btn-primary btn-sm" id="addCouponBtn">+ Add Coupon</button>
+          </div>
+          <div style="overflow-x:auto;">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Code</th>
+                  <th>Type</th>
+                  <th>Value</th>
+                  <th>Expires</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="couponsTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Product Modal -->
+  <div class="modal-overlay" id="productModal">
+    <div class="modal-box glass-card">
+      <div class="modal-head">
+        <h3 id="productModalTitle">Add Product</h3>
+        <button class="modal-close" data-close="productModal">✕</button>
+      </div>
+      <form id="productForm">
+        <input type="hidden" id="productId">
+        <div class="form-group"><label>Name</label><input type="text" class="form-control" id="productName" required>
+        </div>
+        <div class="form-group"><label>Category</label><select class="form-control" id="productCategory"></select></div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+          <div class="form-group"><label>Price (₹)</label><input type="number" step="0.01" class="form-control"
+              id="productPrice" required></div>
+          <div class="form-group"><label>Tax (%)</label><input type="number" step="0.01" class="form-control"
+              id="productTax" value="5"></div>
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+          <div class="form-group"><label>Unit</label><input type="text" class="form-control" id="productUnit"
+              value="pcs"></div>
+          <div class="form-group"><label>Status</label>
+            <select class="form-control" id="productStatus">
+              <option value="active">Active</option>
+              <option value="inactive">Inactive</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group"><label>Image URL (optional)</label><input type="text" class="form-control"
+            id="productImage" placeholder="/static/images/placeholder.svg"></div>
+        <div class="form-group"><label>Description</label><textarea class="form-control"
+            id="productDescription"></textarea></div>
+        <button type="submit" class="btn btn-primary btn-block">Save Product</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Category Modal -->
+  <div class="modal-overlay" id="categoryModal">
+    <div class="modal-box glass-card">
+      <div class="modal-head">
+        <h3 id="categoryModalTitle">Add Category</h3><button class="modal-close" data-close="categoryModal">✕</button>
+      </div>
+      <form id="categoryForm">
+        <input type="hidden" id="categoryId">
+        <div class="form-group"><label>Name</label><input type="text" class="form-control" id="categoryName" required>
+        </div>
+        <div class="form-group"><label>Color</label><input type="color" class="form-control" id="categoryColor"
+            value="#FF7A00" style="height:46px; padding:6px;"></div>
+        <button type="submit" class="btn btn-primary btn-block">Save Category</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Floor Modal -->
+  <div class="modal-overlay" id="floorModal">
+    <div class="modal-box glass-card">
+      <div class="modal-head">
+        <h3 id="floorModalTitle">Add Floor</h3><button class="modal-close" data-close="floorModal">✕</button>
+      </div>
+      <form id="floorForm">
+        <input type="hidden" id="floorId">
+        <div class="form-group"><label>Floor Name</label><input type="text" class="form-control" id="floorName"
+            placeholder="e.g. Second Floor" required></div>
+        <div style="display:flex; gap:10px;">
+          <button type="submit" class="btn btn-primary btn-block">Save Floor</button>
+          <button type="button" class="btn btn-outline btn-block" id="duplicateFloorBtn" style="display:none;">📋
+            Duplicate Floor</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Table Modal -->
+  <div class="modal-overlay" id="tableModal">
+    <div class="modal-box glass-card">
+      <div class="modal-head">
+        <h3 id="tableModalTitle">Add Table</h3><button class="modal-close" data-close="tableModal">✕</button>
+      </div>
+      <form id="tableForm">
+        <input type="hidden" id="tableId">
+        <div class="form-group"><label>Table Number</label><input type="number" class="form-control" id="tableNumber"
+            required></div>
+        <div class="form-group"><label>Floor</label><select class="form-control" id="tableFloor"></select></div>
+        <div class="form-group"><label>Seats</label><input type="number" class="form-control" id="tableSeats" value="4">
+        </div>
+        <div class="form-group"><label>Status</label>
+          <select class="form-control" id="tableStatus">
+            <option value="available">Available</option>
+            <option value="occupied">Occupied</option>
+          </select>
+        </div>
+        <div style="display:flex; gap:10px;">
+          <button type="submit" class="btn btn-primary btn-block">Save Table</button>
+          <button type="button" class="btn btn-outline btn-block" id="duplicateTableBtn" style="display:none;">📋
+            Duplicate Table</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Customer Modal -->
+  <div class="modal-overlay" id="customerModal">
+    <div class="modal-box glass-card">
+      <div class="modal-head">
+        <h3 id="customerModalTitle">Add Customer</h3><button class="modal-close" data-close="customerModal">✕</button>
+      </div>
+      <form id="customerForm">
+        <input type="hidden" id="customerId">
+        <div class="form-group"><label>Name</label><input type="text" class="form-control" id="customerName" required>
+        </div>
+        <div class="form-group"><label>Email</label><input type="email" class="form-control" id="customerEmail"></div>
+        <div class="form-group"><label>Phone</label><input type="text" class="form-control" id="customerPhone"></div>
+        <div class="form-group"><label>Address</label><textarea class="form-control" id="customerAddress"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Save Customer</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Coupon Modal -->
+  <div class="modal-overlay" id="couponModal">
+    <div class="modal-box glass-card">
+      <div class="modal-head">
+        <h3>Add Coupon</h3><button class="modal-close" data-close="couponModal">✕</button>
+      </div>
+      <form id="couponForm">
+        <div class="form-group"><label>Code</label><input type="text" class="form-control" id="couponCode"
+            placeholder="e.g. SUMMER25" required></div>
+        <div class="form-group"><label>Discount Type</label>
+          <select class="form-control" id="couponType">
+            <option value="percentage">Percentage (%)</option>
+            <option value="fixed">Fixed Amount (₹)</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Discount Value</label><input type="number" step="0.01" class="form-control"
+            id="couponValue" required></div>
+        <p style="font-size:0.78rem; color:var(--text-muted); margin:-6px 0 14px;">⏳ This coupon will automatically
+          expire 5 days from today.</p>
+        <button type="submit" class="btn btn-primary btn-block">Save Coupon</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="{{ url_for('static', filename='js/utils.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+</body>
+
+</html>
